@@ -16,7 +16,7 @@ library(dplyr)
 library(lubridate)
 library(scales)
 
-
+### Explore
 # annual average trend
 ann_avg_data <- data_1y %>%
   filter(param %in% c("no2", "o3", "pm10", "pm25", "so2", "trs")) |>
@@ -38,15 +38,48 @@ ggplot(data = ann_avg_data, aes(x = year, y = value)) +
 
 annual_based_aqos <- read.csv("data/objectives.csv") |>
   filter(param %in% c("pm25", "so2", "no2", "o3"),
-         year >= 2015) |>
+         station_name == "Prince George Plaza 400") |>
   mutate(value = ifelse(data_capture_met == "no", NA, value),
-         percent_diff = round(((value - threshold)/threshold)*100,0))
+         percent_diff = round(((value - threshold)/threshold)*100,0),
+         names = factor(names, levels = c("PM2.5 annual", "PM2.5 24-hr", "NO2 annual", "NO2 1-hr", "SO2 annual", "SO2 1-hr", "O3 8-hr")))
 
-ggplot(annual_based_aqos, aes(x = year, y = percent_diff, colour = station_name)) +
+my_colours3 <- RColorBrewer::brewer.pal(n = 9, name = "Set1")[c(1,2,3,4,5,6,7)]
+
+p1 <- ggplot(annual_based_aqos, aes(x = year, y = percent_diff, colour = name)) +
   geom_line() +
   geom_point() +
-  geom_hline(yintercept = 0) +
-  facet_wrap(~name)
+  geom_hline(yintercept = 0, colour = "red", linetype = "dashed") +
+  scale_y_continuous(breaks = seq(-150, 450, by = 25)) +
+  scale_x_continuous(
+    breaks = 2010:2024,  # Show ticks for each year
+    labels = c(2010:2023, "2024*") # Optionally convert the ticks to characters for display
+  ) +
+  expand_limits(y = c(-125, 400)) +
+  labs(
+    x = "Year",
+    y = "Percent above or below objective/standard (%)",
+    colour = "Objective/Standard"
+  ) +
+  scale_color_manual(
+    values = my_colours3,
+    labels = c(
+      expression(PM[2.5] ~ " - Annual"),
+      expression(PM[2.5] ~ " - 24-hr"),
+      expression(NO[2] ~ " - Annual"),
+      expression(NO[2] ~ " - 1-hr"),
+      expression(SO[2] ~ " - Annual"),
+      expression(SO[2] ~ " - 1-hr"),
+      expression(O[3] ~ " - 8-hr")
+    )
+  ) +
+  theme_bw() +
+  theme(legend.position = "right",
+        axis.text = element_text(size = 12),
+        axis.title = element_text(size = 16),
+        strip.text.x = element_text(size = 14),
+        legend.text = element_text(size = 12),
+        panel.grid = element_blank())
+p1 + scale_y_break(c(200, 350))
 
 ggplot(data_1y |> filter(param %in% c("no2", "o3", "pm25", "pm10", "so2", "trs")),
        aes(x = year, y = value)

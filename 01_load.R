@@ -17,16 +17,23 @@
 
 library(envair)
 
-params <- grep("pm|so2|trs|no2|o3|temp|wspd_sclr|wdir_vect", list_parameters(), value = TRUE)
+params <- grep("pm|so2|trs|no2|o3|temp|wspd_sclr|wdir_vect",
+               list_parameters(),
+               value = TRUE)
 
 data_1hr_original <- params |>
-  purrr::map_dfr(~importBC_data(., 2015:2024, flag_TFEE = TRUE)) |>
-  filter(grepl("Plaza", STATION_NAME))
+  purrr::map_dfr(
+    ~ importBC_data(
+      parameter_or_station  = .,
+      2016:2025,
+      flag_TFEE = TRUE,
+      clean_names = TRUE,
+      pad_data = TRUE)
+    ) |>
+  # select all stations in Prince George; suitable search term for this project, but may not capture all historical sites
+  filter(grepl("Prince George", station_name))
 
-# correct datetime stamps to PST ("Etc/GMT+8")
-tz(data_1hr_original$DATETIME) <- "Etc/GMT+8"
-tz(data_1hr_original$DATE_PST) <- "Etc/GMT+8"
-
+# note: time zone is incorrectly assigned as UTC; fix is provided in 02b_clean_prep.r
 saveRDS(data_1hr_original, file = "data/data_1hr_original.rds")
 
 

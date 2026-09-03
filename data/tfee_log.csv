@@ -640,84 +640,84 @@ date,city,station_name,evidence,event_type,comment,parameter,value
 2021-08-02,Fort St John,Fort St John North Camp C,https://go.nasa.gov/3FtHAk3 ,TF,BC wildfires,pm25,30.1
 2021-08-03,Fort St John,Fort St John North Camp C,https://go.nasa.gov/3Bl6TT5 ,TF,BC wildfires,pm25,20.8
 2021-08-05,Fort St John,Fort St John North Camp C,https://go.nasa.gov/3j08kPR ,TF,BC wildfires,pm25,NA
-2017-07-09,Fort St John,?Fort St John Old Fort,https://go.nasa.gov/2SRe9lb,TF,BC wildfires,pm25,5.4
-2017-07-11,Fort St John,?Fort St John Old Fort,https://go.nasa.gov/33F3bp0,TF,BC wildfires,pm25,15.9
-2017-07-12,Fort St John,?Fort St John Old Fort,https://go.nasa.gov/2FccdAf,TF,BC wildfires,pm25,17.2
-2017-07-13,Fort St John,?Fort St John Old Fort,https://go.nasa.gov/2GKiQu6,TF,BC wildfires,pm25,11.9
-2017-07-14,Fort St John,?Fort St John Old Fort,https://go.nasa.gov/3jDR0hH,TF,BC wildfires,pm25,12.2
-2017-07-15,Fort St John,?Fort St John Old Fort,https://go.nasa.gov/3iCOaIs,TF,BC wildfires,pm25,26.3
-2017-07-19,Fort St John,?Fort St John Old Fort,https://go.nasa.gov/3iFdVbf,TF,BC wildfires,pm25,12.3
-2017-07-20,Fort St John,?Fort St John Old Fort,https://go.nasa.gov/3df3MB0,TF,BC wildfires,pm25,6.1
-2017-07-26,Fort St John,?Fort St John Old Fort,https://go.nasa.gov/34HKfVI,TF,BC wildfires,pm25,7.1
-2017-08-12,Fort St John,?Fort St John Old Fort,https://go.nasa.gov/3lk73lg,TF,BC wildfires; Alberta wildfires,pm25,11.2
-2017-08-13,Fort St John,?Fort St John Old Fort,https://go.nasa.gov/3nvv1Mf,TF,BC wildfires,pm25,13.5
-2017-08-30,Fort St John,?Fort St John Old Fort,https://go.nasa.gov/33IlsSs,TF,BC wildfires,pm25,5.8
-2017-09-05,Fort St John,?Fort St John Old Fort,https://go.nasa.gov/2GDUcvw,TF,BC wildfires,pm25,3.7
-2017-09-06,Fort St John,?Fort St John Old Fort,https://go.nasa.gov/3jIYLTn,TF,BC wildfires,pm25,11.4
-2017-09-07,Fort St John,?Fort St John Old Fort,https://go.nasa.gov/2GMvvg3,TF,BC wildfires,pm25,32
-2018-05-29,Fort St John,?Fort St John Old Fort,TF_EE evidence directory,TF,BC wildfires,pm25,8.4
-2018-07-23,Fort St John,?Fort St John Old Fort,https://go.nasa.gov/3uOHPkN,TF,BC wildfires,pm25,1.1
-2018-07-24,Fort St John,?Fort St John Old Fort,https://go.nasa.gov/34MYIQx,TF,BC wildfires,pm25,12
-2018-07-25,Fort St John,?Fort St John Old Fort,https://go.nasa.gov/30SwpPe,TF,BC wildfires,pm25,13.2
-2018-07-26,Fort St John,?Fort St John Old Fort,https://go.nasa.gov/30TFU0B,TF,BC wildfires,pm25,14.8
-2018-07-27,Fort St John,?Fort St John Old Fort,https://go.nasa.gov/3iRD4PL,TF,BC wildfires,pm25,17.4
-2018-07-28,Fort St John,?Fort St John Old Fort,https://go.nasa.gov/3iNwl9I,TF,BC wildfires,pm25,14.3
-2018-07-31,Fort St John,?Fort St John Old Fort,https://go.nasa.gov/3weyWmC,TF,BC wildfires,pm25,4.4
-2018-08-02,Fort St John,?Fort St John Old Fort,https://go.nasa.gov/375063w,TF,BC wildfires,pm25,9.4
-2018-08-03,Fort St John,?Fort St John Old Fort,https://go.nasa.gov/3le8IeR,TF,BC wildfires,pm25,12.5
-2018-08-06,Fort St John,?Fort St John Old Fort,https://go.nasa.gov/30YNAyI,TF,BC wildfires,pm25,6.9
-2018-08-07,Fort St John,?Fort St John Old Fort,https://go.nasa.gov/3jVhfQJ,TF,BC wildfires,pm25,13
-2018-08-08,Fort St John,?Fort St John Old Fort,https://go.nasa.gov/36Yj390,TF,BC wildfires,pm25,34.4
-2018-08-09,Fort St John,?Fort St John Old Fort,https://go.nasa.gov/370SXBi,TF,BC wildfires,pm25,99.6
-2018-08-10,Fort St John,?Fort St John Old Fort,https://go.nasa.gov/370Ix4L,TF,BC wildfires,pm25,NA
-2018-08-11,Fort St John,?Fort St John Old Fort,https://go.nasa.gov/33SunAw,TF,BC wildfires,pm25,NA
-2018-08-13,Fort St John,?Fort St John Old Fort,https://go.nasa.gov/33T6bxV,TF,BC wildfires,pm25,NA
-2018-08-14,Fort St John,?Fort St John Old Fort,https://go.nasa.gov/313dsJK,TF,BC wildfires,pm25,NA
-2018-08-15,Fort St John,?Fort St John Old Fort,https://go.nasa.gov/3dp50cN,TF,BC wildfires,pm25,NA
-2018-08-16,Fort St John,?Fort St John Old Fort,https://go.nasa.gov/372QKVW,TF,BC wildfires,pm25,NA
-2018-08-17,Fort St John,?Fort St John Old Fort,https://go.nasa.gov/3nP5DBp,TF,BC wildfires,pm25,NA
-2018-08-18,Fort St John,?Fort St John Old Fort,https://go.nasa.gov/3dpiPIr,TF,BC wildfires,pm25,NA
-2018-08-19,Fort St John,?Fort St John Old Fort,https://go.nasa.gov/314tYJE,TF,BC wildfires,pm25,NA
-2018-08-20,Fort St John,?Fort St John Old Fort,https://go.nasa.gov/3nOjW9i,TF,BC wildfires,pm25,NA
-2018-08-21,Fort St John,?Fort St John Old Fort,https://go.nasa.gov/3lFWt8k,TF,BC wildfires,pm25,NA
-2018-08-22,Fort St John,?Fort St John Old Fort,https://go.nasa.gov/313YwLp,TF,BC wildfires,pm25,NA
-2018-08-23,Fort St John,?Fort St John Old Fort,https://go.nasa.gov/3lD7o2o,TF,BC wildfires,pm25,NA
-2018-08-24,Fort St John,?Fort St John Old Fort,https://go.nasa.gov/3dmRaaO,TF,BC wildfires,pm25,NA
-2018-08-25,Fort St John,?Fort St John Old Fort,https://go.nasa.gov/3nNlKPO,TF,BC wildfires,pm25,NA
-2018-08-27,Fort St John,?Fort St John Old Fort,https://go.nasa.gov/2SPmNjM,TF,BC wildfires,pm25,NA
-2019-05-23,Fort St John,?Fort St John Old Fort,https://go.nasa.gov/350zQVA,TF,Alberta wildfires,pm25,NA
-2019-05-24,Fort St John,?Fort St John Old Fort,https://go.nasa.gov/315w3oJ,TF,Alberta wildfires,pm25,NA
-2019-05-25,Fort St John,?Fort St John Old Fort,https://go.nasa.gov/3lJrCYm,TF,Alberta wildfires,pm25,27.9
-2019-05-26,Fort St John,?Fort St John Old Fort,https://go.nasa.gov/3lMUq27,TF,Alberta wildfires,pm25,16.8
-2019-05-27,Fort St John,?Fort St John Old Fort,https://go.nasa.gov/2SOmTZ4,TF,Alberta wildfires,pm25,19.6
-2019-05-29,Fort St John,?Fort St John Old Fort,https://go.nasa.gov/3aehdAv,TF,Alberta wildfires,pm25,10.3
-2019-05-30,Fort St John,?Fort St John Old Fort,https://go.nasa.gov/3nNnd8U,TF,Alberta wildfires,pm25,31.8
-2019-05-31,Fort St John,?Fort St John Old Fort,https://go.nasa.gov/33VaBV6,TF,Alberta wildfires,pm25,197.6
-2019-07-11,Fort St John,?Fort St John Old Fort,https://go.nasa.gov/3AivUgb,TF,Yukon wildfires,pm25,8.1
-2019-07-12,Fort St John,?Fort St John Old Fort,https://go.nasa.gov/3lm5iHc,TF,Alberta wildfires,pm25,12.1
-2019-07-13,Fort St John,?Fort St John Old Fort,https://go.nasa.gov/3Dizkl9,TF,Alberta wildfires,pm25,12.3
-2019-08-14,Fort St John,?Fort St John Old Fort,https://go.nasa.gov/3nN1U7d,TF,Alberta wildfires,pm25,14
-2020-08-01,Fort St John,?Fort St John Old Fort,https://go.nasa.gov/2YwYcqo,TF,NWT wildfires,pm25,11
-2020-09-13,Fort St John,?Fort St John Old Fort,https://go.nasa.gov/2YAkvf5,TF,USA wildfires,pm25,1
-2020-09-18,Fort St John,?Fort St John Old Fort,https://go.nasa.gov/3008fVr,TF,USA wildfires,pm25,13.4
-2020-09-19,Fort St John,?Fort St John Old Fort,https://go.nasa.gov/3BpeCQa,TF,USA wildfires,pm25,18.6
-2021-06-30,Fort St John,?Fort St John Old Fort,https://go.nasa.gov/3Aj4hnu,TF,BC wildfires,pm25,19.4
-2021-07-01,Fort St John,?Fort St John Old Fort,https://go.nasa.gov/3uOw262,TF,BC wildfires,pm25,8.1
-2021-07-07,Fort St John,?Fort St John Old Fort,https://go.nasa.gov/3AlNS1i,TF,BC wildfires,pm25,10.3
-2021-07-08,Fort St John,?Fort St John Old Fort,https://go.nasa.gov/3llzaTU,TF,BC wildfires,pm25,20.2
-2021-07-09,Fort St John,?Fort St John Old Fort,https://go.nasa.gov/309UILj,TF,BC wildfires,pm25,12.4
-2021-07-10,Fort St John,?Fort St John Old Fort,https://go.nasa.gov/2YqQu1m,TF,BC wildfires,pm25,14
-2021-07-12,Fort St John,?Fort St John Old Fort,https://go.nasa.gov/3ahMimM,TF,BC wildfires,pm25,NA
-2021-07-13,Fort St John,?Fort St John Old Fort,https://go.nasa.gov/3iFqXs1,TF,BC wildfires,pm25,23.6
-2021-07-14,Fort St John,?Fort St John Old Fort,https://go.nasa.gov/3oInPzo,TF,BC wildfires,pm25,19.7
-2021-07-15,Fort St John,?Fort St John Old Fort,https://go.nasa.gov/3agGLgd,TF,BC wildfires,pm25,13.9
-2021-07-20,Fort St John,?Fort St John Old Fort,https://go.nasa.gov/3aeDXjR,TF,BC wildfires,pm25,16
-2021-07-21,Fort St John,?Fort St John Old Fort,https://go.nasa.gov/3oHg5xG,TF,BC wildfires,pm25,9
-2021-07-31,Fort St John,?Fort St John Old Fort,https://go.nasa.gov/3ljlIji ,TF,BC wildfires,pm25,22.2
-2021-08-01,Fort St John,?Fort St John Old Fort,https://go.nasa.gov/3DmyEeq ,TF,BC wildfires,pm25,30.2
-2021-08-02,Fort St John,?Fort St John Old Fort,https://go.nasa.gov/3FtHAk3 ,TF,BC wildfires,pm25,33.5
-2021-08-03,Fort St John,?Fort St John Old Fort,https://go.nasa.gov/3Bl6TT5 ,TF,BC wildfires,pm25,21
-2021-08-05,Fort St John,?Fort St John Old Fort,https://go.nasa.gov/3j08kPR ,TF,BC wildfires,pm25,10.5
+2017-07-09,Fort St John,Fort St John Old Fort,https://go.nasa.gov/2SRe9lb,TF,BC wildfires,pm25,5.4
+2017-07-11,Fort St John,Fort St John Old Fort,https://go.nasa.gov/33F3bp0,TF,BC wildfires,pm25,15.9
+2017-07-12,Fort St John,Fort St John Old Fort,https://go.nasa.gov/2FccdAf,TF,BC wildfires,pm25,17.2
+2017-07-13,Fort St John,Fort St John Old Fort,https://go.nasa.gov/2GKiQu6,TF,BC wildfires,pm25,11.9
+2017-07-14,Fort St John,Fort St John Old Fort,https://go.nasa.gov/3jDR0hH,TF,BC wildfires,pm25,12.2
+2017-07-15,Fort St John,Fort St John Old Fort,https://go.nasa.gov/3iCOaIs,TF,BC wildfires,pm25,26.3
+2017-07-19,Fort St John,Fort St John Old Fort,https://go.nasa.gov/3iFdVbf,TF,BC wildfires,pm25,12.3
+2017-07-20,Fort St John,Fort St John Old Fort,https://go.nasa.gov/3df3MB0,TF,BC wildfires,pm25,6.1
+2017-07-26,Fort St John,Fort St John Old Fort,https://go.nasa.gov/34HKfVI,TF,BC wildfires,pm25,7.1
+2017-08-12,Fort St John,Fort St John Old Fort,https://go.nasa.gov/3lk73lg,TF,BC wildfires; Alberta wildfires,pm25,11.2
+2017-08-13,Fort St John,Fort St John Old Fort,https://go.nasa.gov/3nvv1Mf,TF,BC wildfires,pm25,13.5
+2017-08-30,Fort St John,Fort St John Old Fort,https://go.nasa.gov/33IlsSs,TF,BC wildfires,pm25,5.8
+2017-09-05,Fort St John,Fort St John Old Fort,https://go.nasa.gov/2GDUcvw,TF,BC wildfires,pm25,3.7
+2017-09-06,Fort St John,Fort St John Old Fort,https://go.nasa.gov/3jIYLTn,TF,BC wildfires,pm25,11.4
+2017-09-07,Fort St John,Fort St John Old Fort,https://go.nasa.gov/2GMvvg3,TF,BC wildfires,pm25,32
+2018-05-29,Fort St John,Fort St John Old Fort,TF_EE evidence directory,TF,BC wildfires,pm25,8.4
+2018-07-23,Fort St John,Fort St John Old Fort,https://go.nasa.gov/3uOHPkN,TF,BC wildfires,pm25,1.1
+2018-07-24,Fort St John,Fort St John Old Fort,https://go.nasa.gov/34MYIQx,TF,BC wildfires,pm25,12
+2018-07-25,Fort St John,Fort St John Old Fort,https://go.nasa.gov/30SwpPe,TF,BC wildfires,pm25,13.2
+2018-07-26,Fort St John,Fort St John Old Fort,https://go.nasa.gov/30TFU0B,TF,BC wildfires,pm25,14.8
+2018-07-27,Fort St John,Fort St John Old Fort,https://go.nasa.gov/3iRD4PL,TF,BC wildfires,pm25,17.4
+2018-07-28,Fort St John,Fort St John Old Fort,https://go.nasa.gov/3iNwl9I,TF,BC wildfires,pm25,14.3
+2018-07-31,Fort St John,Fort St John Old Fort,https://go.nasa.gov/3weyWmC,TF,BC wildfires,pm25,4.4
+2018-08-02,Fort St John,Fort St John Old Fort,https://go.nasa.gov/375063w,TF,BC wildfires,pm25,9.4
+2018-08-03,Fort St John,Fort St John Old Fort,https://go.nasa.gov/3le8IeR,TF,BC wildfires,pm25,12.5
+2018-08-06,Fort St John,Fort St John Old Fort,https://go.nasa.gov/30YNAyI,TF,BC wildfires,pm25,6.9
+2018-08-07,Fort St John,Fort St John Old Fort,https://go.nasa.gov/3jVhfQJ,TF,BC wildfires,pm25,13
+2018-08-08,Fort St John,Fort St John Old Fort,https://go.nasa.gov/36Yj390,TF,BC wildfires,pm25,34.4
+2018-08-09,Fort St John,Fort St John Old Fort,https://go.nasa.gov/370SXBi,TF,BC wildfires,pm25,99.6
+2018-08-10,Fort St John,Fort St John Old Fort,https://go.nasa.gov/370Ix4L,TF,BC wildfires,pm25,NA
+2018-08-11,Fort St John,Fort St John Old Fort,https://go.nasa.gov/33SunAw,TF,BC wildfires,pm25,NA
+2018-08-13,Fort St John,Fort St John Old Fort,https://go.nasa.gov/33T6bxV,TF,BC wildfires,pm25,NA
+2018-08-14,Fort St John,Fort St John Old Fort,https://go.nasa.gov/313dsJK,TF,BC wildfires,pm25,NA
+2018-08-15,Fort St John,Fort St John Old Fort,https://go.nasa.gov/3dp50cN,TF,BC wildfires,pm25,NA
+2018-08-16,Fort St John,Fort St John Old Fort,https://go.nasa.gov/372QKVW,TF,BC wildfires,pm25,NA
+2018-08-17,Fort St John,Fort St John Old Fort,https://go.nasa.gov/3nP5DBp,TF,BC wildfires,pm25,NA
+2018-08-18,Fort St John,Fort St John Old Fort,https://go.nasa.gov/3dpiPIr,TF,BC wildfires,pm25,NA
+2018-08-19,Fort St John,Fort St John Old Fort,https://go.nasa.gov/314tYJE,TF,BC wildfires,pm25,NA
+2018-08-20,Fort St John,Fort St John Old Fort,https://go.nasa.gov/3nOjW9i,TF,BC wildfires,pm25,NA
+2018-08-21,Fort St John,Fort St John Old Fort,https://go.nasa.gov/3lFWt8k,TF,BC wildfires,pm25,NA
+2018-08-22,Fort St John,Fort St John Old Fort,https://go.nasa.gov/313YwLp,TF,BC wildfires,pm25,NA
+2018-08-23,Fort St John,Fort St John Old Fort,https://go.nasa.gov/3lD7o2o,TF,BC wildfires,pm25,NA
+2018-08-24,Fort St John,Fort St John Old Fort,https://go.nasa.gov/3dmRaaO,TF,BC wildfires,pm25,NA
+2018-08-25,Fort St John,Fort St John Old Fort,https://go.nasa.gov/3nNlKPO,TF,BC wildfires,pm25,NA
+2018-08-27,Fort St John,Fort St John Old Fort,https://go.nasa.gov/2SPmNjM,TF,BC wildfires,pm25,NA
+2019-05-23,Fort St John,Fort St John Old Fort,https://go.nasa.gov/350zQVA,TF,Alberta wildfires,pm25,NA
+2019-05-24,Fort St John,Fort St John Old Fort,https://go.nasa.gov/315w3oJ,TF,Alberta wildfires,pm25,NA
+2019-05-25,Fort St John,Fort St John Old Fort,https://go.nasa.gov/3lJrCYm,TF,Alberta wildfires,pm25,27.9
+2019-05-26,Fort St John,Fort St John Old Fort,https://go.nasa.gov/3lMUq27,TF,Alberta wildfires,pm25,16.8
+2019-05-27,Fort St John,Fort St John Old Fort,https://go.nasa.gov/2SOmTZ4,TF,Alberta wildfires,pm25,19.6
+2019-05-29,Fort St John,Fort St John Old Fort,https://go.nasa.gov/3aehdAv,TF,Alberta wildfires,pm25,10.3
+2019-05-30,Fort St John,Fort St John Old Fort,https://go.nasa.gov/3nNnd8U,TF,Alberta wildfires,pm25,31.8
+2019-05-31,Fort St John,Fort St John Old Fort,https://go.nasa.gov/33VaBV6,TF,Alberta wildfires,pm25,197.6
+2019-07-11,Fort St John,Fort St John Old Fort,https://go.nasa.gov/3AivUgb,TF,Yukon wildfires,pm25,8.1
+2019-07-12,Fort St John,Fort St John Old Fort,https://go.nasa.gov/3lm5iHc,TF,Alberta wildfires,pm25,12.1
+2019-07-13,Fort St John,Fort St John Old Fort,https://go.nasa.gov/3Dizkl9,TF,Alberta wildfires,pm25,12.3
+2019-08-14,Fort St John,Fort St John Old Fort,https://go.nasa.gov/3nN1U7d,TF,Alberta wildfires,pm25,14
+2020-08-01,Fort St John,Fort St John Old Fort,https://go.nasa.gov/2YwYcqo,TF,NWT wildfires,pm25,11
+2020-09-13,Fort St John,Fort St John Old Fort,https://go.nasa.gov/2YAkvf5,TF,USA wildfires,pm25,1
+2020-09-18,Fort St John,Fort St John Old Fort,https://go.nasa.gov/3008fVr,TF,USA wildfires,pm25,13.4
+2020-09-19,Fort St John,Fort St John Old Fort,https://go.nasa.gov/3BpeCQa,TF,USA wildfires,pm25,18.6
+2021-06-30,Fort St John,Fort St John Old Fort,https://go.nasa.gov/3Aj4hnu,TF,BC wildfires,pm25,19.4
+2021-07-01,Fort St John,Fort St John Old Fort,https://go.nasa.gov/3uOw262,TF,BC wildfires,pm25,8.1
+2021-07-07,Fort St John,Fort St John Old Fort,https://go.nasa.gov/3AlNS1i,TF,BC wildfires,pm25,10.3
+2021-07-08,Fort St John,Fort St John Old Fort,https://go.nasa.gov/3llzaTU,TF,BC wildfires,pm25,20.2
+2021-07-09,Fort St John,Fort St John Old Fort,https://go.nasa.gov/309UILj,TF,BC wildfires,pm25,12.4
+2021-07-10,Fort St John,Fort St John Old Fort,https://go.nasa.gov/2YqQu1m,TF,BC wildfires,pm25,14
+2021-07-12,Fort St John,Fort St John Old Fort,https://go.nasa.gov/3ahMimM,TF,BC wildfires,pm25,NA
+2021-07-13,Fort St John,Fort St John Old Fort,https://go.nasa.gov/3iFqXs1,TF,BC wildfires,pm25,23.6
+2021-07-14,Fort St John,Fort St John Old Fort,https://go.nasa.gov/3oInPzo,TF,BC wildfires,pm25,19.7
+2021-07-15,Fort St John,Fort St John Old Fort,https://go.nasa.gov/3agGLgd,TF,BC wildfires,pm25,13.9
+2021-07-20,Fort St John,Fort St John Old Fort,https://go.nasa.gov/3aeDXjR,TF,BC wildfires,pm25,16
+2021-07-21,Fort St John,Fort St John Old Fort,https://go.nasa.gov/3oHg5xG,TF,BC wildfires,pm25,9
+2021-07-31,Fort St John,Fort St John Old Fort,https://go.nasa.gov/3ljlIji ,TF,BC wildfires,pm25,22.2
+2021-08-01,Fort St John,Fort St John Old Fort,https://go.nasa.gov/3DmyEeq ,TF,BC wildfires,pm25,30.2
+2021-08-02,Fort St John,Fort St John Old Fort,https://go.nasa.gov/3FtHAk3 ,TF,BC wildfires,pm25,33.5
+2021-08-03,Fort St John,Fort St John Old Fort,https://go.nasa.gov/3Bl6TT5 ,TF,BC wildfires,pm25,21
+2021-08-05,Fort St John,Fort St John Old Fort,https://go.nasa.gov/3j08kPR ,TF,BC wildfires,pm25,10.5
 2010-08-03,Houston,Houston Firehall,https://go.nasa.gov/2WIeb4a,TF,BC wildfires,pm25,5.6
 2010-08-04,Houston,Houston Firehall,https://go.nasa.gov/2WJWW2z,TF,BC wildfires,pm25,6.4
 2010-08-05,Houston,Houston Firehall,https://go.nasa.gov/3iz05a3,TF,BC wildfires,pm25,9.9
@@ -1256,6 +1256,33 @@ date,city,station_name,evidence,event_type,comment,parameter,value
 2024-09-06,Prince George,Prince George Plaza 400,https://go.nasa.gov/4hXHO5E,TF,BC wildfires,pm25,51.1
 2024-09-07,Prince George,Prince George Plaza 400,https://go.nasa.gov/3EE6C45,TF,BC wildfires,pm25,105.5
 2024-09-08,Prince George,Prince George Plaza 400,https://go.nasa.gov/4b8mUP2,TF,BC wildfires,pm25,46.2
+2025-06-11,Prince George,Prince George Plaza 400,https://go.nasa.gov/4zKN5Hi,TF,BC wildfires,pm25,62.5
+2025-06-12,Prince George,Prince George Plaza 400,https://go.nasa.gov/4gFblBV,TF,BC wildfires,pm25,39.1
+2025-06-21,Prince George,Prince George Plaza 400,https://go.nasa.gov/460UDbh,TF,BC wildfires,pm25,22.9
+2025-06-22,Prince George,Prince George Plaza 400,https://go.nasa.gov/4yiwlpv,TF,BC wildfires,pm25,17.8
+2025-06-23,Prince George,Prince George Plaza 400,https://go.nasa.gov/4zPruNR,TF,BC wildfires,pm25,11.8
+2025-07-21,Prince George,Prince George Plaza 400,https://go.nasa.gov/3SitXje,TF,BC wildfires,pm25,15.2
+2025-07-31,Prince George,Prince George Plaza 400,https://go.nasa.gov/4yayOls,TF,BC wildfires,pm25,16.7
+2025-08-04,Prince George,Prince George Plaza 400,https://go.nasa.gov/4zOZwBS,TF,BC wildfires,pm25,17
+2025-08-05,Prince George,Prince George Plaza 400,https://go.nasa.gov/3Taa91H,TF,BC wildfires,pm25,27.7
+2025-08-28,Prince George,Prince George Plaza 400,https://go.nasa.gov/4gN0SEN,TF,BC wildfires,pm25,19.4
+2025-08-30,Prince George,Prince George Plaza 400,https://go.nasa.gov/4iDbBnw,TF,BC wildfires,pm25,19.6
+2025-08-31,Prince George,Prince George Plaza 400,https://go.nasa.gov/4cO3iSc,TF,BC wildfires,pm25,22.7
+2025-09-01,Prince George,Prince George Plaza 400,https://go.nasa.gov/4gIa25h,TF,BC wildfires,pm25,28.3
+2025-09-02,Prince George,Prince George Plaza 400,https://go.nasa.gov/45ZPfFn,TF,BC wildfires,pm25,62.1
+2025-09-03,Prince George,Prince George Plaza 400,https://go.nasa.gov/4cFadgH,TF,BC wildfires,pm25,41.8
+2025-09-04,Prince George,Prince George Plaza 400,https://go.nasa.gov/4ybQixW,TF,BC wildfires,pm25,32.8
+2025-09-05,Prince George,Prince George Plaza 400,https://go.nasa.gov/3SKQOUH,TF,BC wildfires,pm25,64.1
+2025-09-06,Prince George,Prince George Plaza 400,https://go.nasa.gov/4qPfOqj,TF,BC wildfires,pm25,32.2
+2025-09-07,Prince George,Prince George Plaza 400,https://go.nasa.gov/3UtzGmR,TF,BC wildfires,pm25,50.9
+2025-09-08,Prince George,Prince George Plaza 400,https://go.nasa.gov/3SFboFO,TF,BC wildfires,pm25,48.6
+2025-09-09,Prince George,Prince George Plaza 400,https://go.nasa.gov/4x1uF2r,TF,BC wildfires,pm25,28.2
+2025-09-10,Prince George,Prince George Plaza 400,https://go.nasa.gov/3V69hM3,TF,BC wildfires,pm25,17.9
+2025-09-11,Prince George,Prince George Plaza 400,https://go.nasa.gov/4ya0MOl,TF,BC wildfires,pm25,47.9
+2025-09-12,Prince George,Prince George Plaza 400,https://go.nasa.gov/4gJ2RKg,TF,BC wildfires,pm25,43.3
+2025-09-13,Prince George,Prince George Plaza 400,https://go.nasa.gov/4qJqw1u,TF,BC wildfires,pm25,36.4
+2025-09-14,Prince George,Prince George Plaza 400,https://go.nasa.gov/4yguQrR,TF,BC wildfires,pm25,12.7
+2025-09-17,Prince George,Prince George Plaza 400,https://go.nasa.gov/4h2iP3d,TF,BC wildfires,pm25,13
 2010-08-03,Smithers,Smithers St Josephs,https://go.nasa.gov/2WIeb4a,TF,BC wildfires,pm25,16.6
 2010-08-04,Smithers,Smithers St Josephs,https://go.nasa.gov/2WJWW2z,TF,BC wildfires,pm25,66.8
 2010-08-05,Smithers,Smithers St Josephs,https://go.nasa.gov/3iz05a3,TF,BC wildfires,pm25,36.6

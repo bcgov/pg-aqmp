@@ -31,7 +31,8 @@ tz(data_1hr_original$date_pst) <- "Etc/GMT+8"
 
 data_1hr <- data_1hr_original |>
 
-  rename(date_hour_end = date_pst) |> # Hour ending average. For example, 2015-01-01 02:00 represents data collected from 01:01 - 02:00.
+  # Hour ending average. For example, 2015-01-01 02:00 represents data collected from 01:01 - 02:00.
+  rename(date_hour_end = date_pst) |>
 
   mutate(
     # create time-based columns
@@ -50,46 +51,60 @@ data_1hr <- data_1hr_original |>
            param == "wspd_sclr" ~ "ws",
            .default = as.character(param)),
     param = factor(param),
-    instrument = stringr::str_to_lower(instrument),
+    instrument = stringr::str_to_lower(instrument)
+    )|>
 
-    # calculate the rolling 8hr average for O3; data completeness requirement is a minimum of 6hr per 8hr average
-    # if not O3, return rounded_value
-    rounded_value_r8ho3 = case_when(param == "o3" ~
-                               zoo::rollapply(rounded_value, width = 8, align = "right", fill = NA, FUN = function(w) {
-                                 # count NA values, return NA if fewer than 6 hours available
-                                 non_na_count <- sum(!is.na(w))
-                                 if(non_na_count >= 6) {
-                                   return(round(mean(w, na.rm = TRUE), 1))
-                                   } else {
-                                     return(NA_real_)
-                                     }
-                                 }),
-                           TRUE ~ rounded_value
-                           )
-    ) |>
+  select(
+    date_hour_begin,
+    date_hour_end,
+    date,
+    year,
+    month,
+    hour,
+    station_name,
+    param,
+    raw_value,
+    rounded_value,
+    unit,
+    instrument,
+    validation_status
+    )
 
-      select(
-        date_hour_begin,
-        date_hour_end,
-        date,
-        year,
-        month,
-        hour,
-        station_name,
-        param,
-        raw_value,
-        rounded_value,
-        rounded_value_r8ho3,
-        unit,
-        instrument,
-        validation_status
-      )
+# Calculate the rolling 8hr average for O3; data completeness requirement is a minimum of 6hr per 8hr average
+o3_8hr_roll <- data_1hr |>
+  filter(param == "o3") |>
+  mutate(
+    param = "o3_rolling_8hr",
+    raw_value = zoo::rollapply(
+      rounded_value,
+      width = 8,
+      align = "right",
+      fill = NA,
+      FUN = function(w) {
+        # count NA values, return NA if fewer than 6 hours available
+        non_na_count <- sum(!is.na(w))
+        if (non_na_count >= 6) {
+          return(round(mean(w, na.rm = TRUE), 1))
+        } else {
+          return(NA_real_)
+        }
+      }
+    ),
+    rounded_value = raw_value
+  )
 
-### clean
+# add o3 8-hour rolling average to data_1hr
+data_1hr <- data_1hr |>
+  bind_rows(o3_8hr_roll) |>
+  mutate(param = factor(param))
+
+#------------------------------------------------------
+# clean up inconsistencies
+#------------------------------------------------------
 data_1hr <- data_1hr |>
   # Remove PM2.5 TEOM (keep PM2.5 SHARP): TEOM and SHARP were collocated ~ 2012(?) - 2015
   filter_out(instrument == "pm25_r&p_teom") |>
-  # Keep PM10 TEOM to May 6, 2020 (last measurement 0900), then SHARP 5014. There are no periods where the monitors were collocated.
+  # Keep PM10 TEOM to May 6, 2020 09:00 (last measurement), then SHARP 5014. There are no periods when the monitors were collocated.
   filter_out(instrument == "pm10_r&p_teom" & date > as.Date("2020-05-06")) |>
   filter_out(instrument == "pm10_5014i" & date <= as.Date("2020-05-06")) |>
   # Drop cases where all values for any given parameter are NA for any given station
@@ -195,7 +210,21 @@ data_qtr <- data_qtr_wide |>
 data_season <- data_season_wide |>
   tidyr::pivot_longer(cols = where(is.numeric), names_to = "param", values_to = "value") |>
   arrange(param, date)|>
-  mutate(param = factor(param)) |>
+  mutate(param = factor(param),
+         month = format(date, "%m"),
+         met_season = case_when(
+           month %in% 9:11 ~ "Fall (Sep - Nov)",
+           month %in% c(12, 1,2) ~ "Winter(Dec - Feb)",
+           month %in% 3:5 ~ "Spring (Mar - May)",
+           TRUE ~ "Summer (Jun - Aug)"
+         ),
+         met_season = factor(met_season,
+                             levels = c("Winter(Dec - Feb)",
+                                        "Fall (Sep - Nov)",
+                                        "Summer (Jun - Aug)",
+                                        "Spring (Mar - May)")
+         ))|>
+  select(-month) |>
   left_join(data_24hr_meta, by = c("station_name", "date", "param"))
 
 #------------------------------------------------------
@@ -274,17 +303,6 @@ rm(tfee_pm25)
 rm(removed_tfee_days)
 
 #------------------------------------------------------
-# save data sets: data_1hr, data_24hr, data_1m, data_1y, and data_season
-#------------------------------------------------------
-
-saveRDS(data_1hr, file = "data/data_1hr.rds")
-saveRDS(data_24hr, file = "data/data_24hr.rds")
-saveRDS(data_1m, file = "data/data_1m.rds")
-saveRDS(data_1y, file = "data/data_1y.rds")
-saveRDS(data_qtr, file = "data/data_qtr.rds")
-saveRDS(data_season, file = "data/data_season.rds")
-
-#------------------------------------------------------
 # data capture summaries: month, year, calendar quarter, and season
 #------------------------------------------------------
 
@@ -360,7 +378,8 @@ data_1m <- data_1m |>
              .preserve = FALSE)
 
 data_qtr <- data_qtr |>
-  left_join(data_cap_qtr) |>
+  left_join(data_cap_qtr,
+            relationship = "many-to-many") |>
   # Drop parameters where all values are NA for any given station
   filter_out(all(is.na(value)),
              .by = c(station_name, param),
@@ -394,7 +413,7 @@ data_1y <- data_1y |>
              .preserve = FALSE)
 
 #------------------------------------------------------
-# save data sets (with data capture where applicable):
+# save data sets (with data capture where applicable)
 #------------------------------------------------------
 
 saveRDS(data_1hr, file = "data/data_1hr.rds")
@@ -411,3 +430,4 @@ saveRDS(data_season, file = "data/data_season.rds")
 rm(list = ls(pattern = "wide"))
 rm(list = ls(pattern = "meta"))
 rm(tfee)
+rm(o3_8hr_roll)

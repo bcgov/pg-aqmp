@@ -10,16 +10,31 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and limitations under the License.
 
-# Packages
+#------------------------------------------------------
+# load packages
+#------------------------------------------------------
+
 library(ggplot2)
 library(dplyr)
 library(lubridate)
 library(scales)
 
+#------------------------------------------------------
+# read data frames generated in 2b
+#------------------------------------------------------
 
-# annual average trend
+data_24hr <- readRDS("data/data_24hr.rds")
+data_1y <- readRDS("data/data_1y.rds")
+
+#------------------------------------------------------
+# exploratory plots
+#------------------------------------------------------
+
+# annual average time series
 ann_avg_data <- data_1y %>%
-  filter(param %in% c("no2", "o3", "pm10", "pm25", "so2", "trs")) |>
+  filter(station_name == "Prince George Plaza 400",
+         param %in% c("no2", "o3", "pm10", "pm25", "so2", "trs")
+         ) |>
   mutate(value = case_when(
     annual_data_capture < 75 ~ NA,
     pmin(q1_data_capture, q2_data_capture, q3_data_capture, q4_data_capture, na.rm = TRUE) < 60 ~ NA,
@@ -31,21 +46,24 @@ ggplot(data = ann_avg_data, aes(x = year, y = value)) +
   geom_point() +
   labs(xlab = "",
        ylab = "Concentration") +
-  scale_x_continuous(breaks = seq(2015, 2024, by = 1)) +
+  scale_x_continuous(breaks = seq(2015, 2025, by = 1)) +
   facet_wrap(~param, scales = "free_y")
 
-# plot AQOs as a percent - all params. For % difference graph.
-
+# aqos taken from stat summaries  ## need to update objectives.csv to include 2025 data ##
 annual_based_aqos <- read.csv("data/objectives.csv") |>
   filter(param %in% c("pm25", "so2", "no2", "o3"),
          year >= 2015) |>
   mutate(value = ifelse(data_capture_met == "no", NA, value),
          percent_diff = round(((value - threshold)/threshold)*100,0))
 
+##HERE
 ggplot(annual_based_aqos, aes(x = year, y = percent_diff, colour = station_name)) +
   geom_line() +
   geom_point() +
-  geom_hline(yintercept = 0) +
+  geom_hline(yintercept = 0,
+             colour = "black",
+             linewidth = 0.8) +
+  annotate(geom = "text", x = 10, y = 0.5, label = "Objective/Standard") +
   facet_wrap(~name)
 
 ggplot(data_1y |> filter(param %in% c("no2", "o3", "pm25", "pm10", "so2", "trs")),
@@ -55,19 +73,20 @@ ggplot(data_1y |> filter(param %in% c("no2", "o3", "pm25", "pm10", "so2", "trs")
   geom_point() +
   facet_wrap(~param)
 
-# relative differences between 2015 and 2024
-diff_2015_2024 <- read.csv("data/objectives.csv") |>
+# relative differences between 2015 and 2025
+diff_2015_2025 <- read.csv("data/objectives.csv") |>
   filter(param %in% c("pm25", "so2", "no2", "o3"),
-         year %in% c(2014, 2023)) |>
+         year %in% c(2014, 2024)) |>
   mutate(value = ifelse(data_capture_met == "no", NA, value)) |>
   select(station_name, year, name, value) |>
   pivot_wider(names_from = "year", values_from = "value") |>
-  mutate(percent_diff = round(((`2023`-`2014`)/`2014`)*100,0))
+  mutate(percent_diff = round(((`2024`-`2014`)/`2014`)*100,0))
 
 
 # pm25 aqos with and without heavy wildfire impacts
 pm25_aqos_for_plot <- data_24hr |>
-  filter(param == "pm25") |>
+  filter(station_name == "Prince George Plaza 400",
+         param == "pm25") |>
   select(station_name, year, param, value, value_tfee) |>
   group_by(station_name, param, year) |>
   summarise(aqo_24hr = quantile(value, 0.98, na.rm = TRUE),
@@ -90,7 +109,6 @@ pm25_aqos_for_plot <- data_24hr |>
                             levels = c("aqo_24hr", "aqo_1y")),
          value = case_when(year %in% c(2015,2017,2019,2020,2022) ~ NA,  # invalidate years with insufficient data capture; to do: use data cap dfs to do this programmatically
                            TRUE ~ value))
-
 
 ### prep plots
 

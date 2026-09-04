@@ -24,16 +24,17 @@ params <- grep("pm|so2|trs|no2|o3|temp|wspd_sclr|wdir_vect",
 data_1hr_original <- params |>
   purrr::map_dfr(
     ~ importBC_data(
-      parameter_or_station  = .,
+      parameter_or_station = .,
       2016:2025,
       flag_TFEE = TRUE,
       clean_names = TRUE,
       pad_data = TRUE)
-    ) |>
+    )
+
   # select all stations in Prince George; suitable search term for this project, but may not capture all historical sites
-  filter(grepl("Prince George", station_name))
+data_1hr_pg_original <- data_1hr_original |> filter(grepl("Prince George", station_name))
 
 # note: time zone is incorrectly assigned as UTC; fix is provided in 02b_clean_prep.r
-saveRDS(data_1hr_original, file = "data/data_1hr_original.rds")
+saveRDS(data_1hr_pg_original, file = "data/data_1hr_original.rds")
 
 

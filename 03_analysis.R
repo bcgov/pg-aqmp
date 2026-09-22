@@ -68,7 +68,7 @@ p1 <- ggplot(annual_based_aqos,
     labels = as.character(seq(min(annual_based_aqos$year), max(annual_based_aqos$year), by = 1))
     ) +
 
-  expand_limits(x = 2025.5) +
+  expand_limits(x = 2026) +
 
   labs(
     x = "",
@@ -110,7 +110,7 @@ p1 <- ggplot(annual_based_aqos,
     aes(label = name),
     direction = "y",
     hjust = 0,
-    nudge_x = 0.05,
+    nudge_x = 0,
     segment.colour = "grey50",
     show.legend = FALSE
   ) +
@@ -120,7 +120,7 @@ p1 <- ggplot(annual_based_aqos,
     aes(x = year, y = 225, label = paste0(round(percent_diff), "%"))  # outlier label
   ) +
 
-  annotate("text", x = 2018, y = 5, label = "Provincal Objective Threshold (2025)", size = 4) +
+  annotate("text", x = 2018, y = 8, label = "Provincal Objective Threshold (2025)", size = 4) +
   annotate("rect", xmin = -Inf, xmax = Inf, ymin = 0, ymax = Inf, alpha = 0.03, fill = "red") +
 
   coord_cartesian(ylim = c(-100, 225)) +

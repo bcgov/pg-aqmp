@@ -4,6 +4,5 @@
 .Ruserdata
 .rds
 
-/Figures/
-/data/
+data/
 pg-aqmp.Rproj

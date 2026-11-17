@@ -144,11 +144,11 @@ p1
 
 pm25_aqos_for_plot <- data_24hr |>
   filter(param == "pm25", year > 2015) |>
-  select(station_name, year, param, value, value_tfee) |>
+  select(station_name, year, param, value, value_adj) |>
   summarise(aqo_24hr = quantile(value, 0.98, na.rm = TRUE),
-            aqo_24hr_local = quantile(value_tfee, 0.98, na.rm = TRUE),
+            aqo_24hr_local = quantile(value_adj, 0.98, na.rm = TRUE),
             aqo_1y = mean(value, na.rm = TRUE),
-            aqo_1y_local = mean(value_tfee, na.rm = TRUE),
+            aqo_1y_local = mean(value_adj, na.rm = TRUE),
             .by = c(station_name, year)
             ) |>
   mutate(across(contains("aqo"), ~round(.x, 1)),
@@ -202,7 +202,7 @@ p2 <- ggplot() +
   theme(legend.position = "bottom",
         axis.text = element_text(size = 10),
         axis.title = element_text(size = 18),
-        strip.text.x = element_text(size = 18),
+        strip.text.x = element_text(size = 16),
         legend.text = element_text(size = 16),
         legend.background = element_blank()) +
   guides(fill = guide_legend(nrow = 2), linetype = guide_legend(nrow = 2))
@@ -222,98 +222,167 @@ data_capture <- data_1y |>
 
 # PM exceedances by season -- also used in Plot 4
  pm_24hr_seasons <- data_24hr |>
-   filter(param %in% c("pm25", "pm10")) |>
-   mutate(met_season = case_when(
+   filter(param %in% c("pm25", "pm10"),
+          !is.na(year)
+          )|>
+   droplevels() |>
+
+   mutate(
+     met_season = case_when(
      month %in% month.abb[9:11] ~ "Fall (Sep - Nov)",
      month %in% month.abb[c(12, 1,2)] ~ "Winter(Dec - Feb)",
      month %in% month.abb[3:5] ~ "Spring (Mar - May)",
      TRUE ~ "Summer (Jun - Aug)"
-   ),
+     ),
    met_season = factor(met_season,
                        levels = c("Winter(Dec - Feb)",
                                   "Fall (Sep - Nov)",
                                   "Summer (Jun - Aug)",
                                   "Spring (Mar - May)")
-                       ))
+                       )
+   )
 
 exceed_by_season <- pm_24hr_seasons |>
-  mutate(threshold = ifelse(param == "pm25", 25, 50)) |>
-  summarise(ndays_exceed = sum(value > threshold,na.rm = TRUE),
-            ndays_exceed_tfee_removed = sum(value_tfee > threshold, na.rm  = TRUE),
+  mutate(threshold_exceed = case_when(
+    param == "pm25" & round(value, 0) >= 25 ~ TRUE,
+    param == "pm10" & round(value, 0) >= 50 ~ TRUE
+    )) |>
+  mutate(threshold_exceed_adj = case_when(
+    param == "pm25" & round(value_adj, 0) >= 25 ~ TRUE,
+    param == "pm10" & round(value_adj, 0) >= 50 ~ TRUE
+  )) |>
+
+  summarise(ndays_exceed = sum(threshold_exceed, na.rm = TRUE),
+            ndays_exceed_adj = sum(threshold_exceed_adj, na.rm  = TRUE), # local events and dust driven events (for pm10)
             .by = c(station_name, year, param, met_season)
   ) |>
   left_join(data_capture) |>
-  mutate(ndays_exceed = ifelse(data_cap_met == FALSE, NA, ndays_exceed),
-         ndays_exceed_tfee_removed = ifelse(data_cap_met == FALSE, NA, ndays_exceed_tfee_removed)) |>
-  tidyr::pivot_longer(cols = starts_with("ndays_exceed"), values_to = "value", names_to = "wildfire")
+  tidyr::pivot_longer(cols = starts_with("ndays_exceed"), values_to = "value", names_to = "group") |>
+  mutate(value_plot = ifelse(data_cap_met == FALSE, 0, value))
+
+totals <- exceed_by_season |>
+  summarise(data_cap_met = all(data_cap_met),
+            total_value = sum(value),
+            .by = c(station_name, year, param, group)
+  ) |>
+  mutate(total_value_plot = ifelse(data_cap_met == FALSE, 0, total_value),
+         labels = ifelse(data_cap_met == FALSE, "NA", as.character(total_value))
+  )
 
  my_colours2 <- RColorBrewer::brewer.pal(n = 9, name = "Set1")[c(3,6,5,2)]
  plt_subtitle <- expression(paste(PM[2.5], " 24-hr concentration greater than or equal to 25 ", mu, "g ", m^3))
 
- facet_names <- c(
+ facet_names_pm25 <- c(
    `ndays_exceed` = "All data",
-   `ndays_exceed_tfee_removed` = "Heavy wildfire smoke smoke removed"
+   `ndays_exceed_adj` = "Heavy wildfire smoke removed"
  )
 
+ exceed_pm25 <- exceed_by_season |>
+   filter(param == "pm25") |>
+   droplevels()
+
 p3 <- ggplot() +
-   geom_col(data = exceed_by_season |> filter(param == "pm25"),
-            aes(x = factor(year),
-                y = value,
-                fill = forcats::fct_rev(met_season)),
-            position = "stack") +
-   scale_fill_manual(name = "Season",
+  geom_col(
+    data = exceed_pm25,
+    aes(x = year,
+        y = value_plot,
+        fill = forcats::fct_rev(met_season)
+        ),
+    position = "stack") +
+
+  scale_fill_manual(name = "Season",
                      values = my_colours2) +
-   labs(title = "Number of days PM2.5 exceeded the 24-hour AQO threshold by season",
+
+  geom_text(
+    data = totals |> filter(param == "pm25") |> droplevels(),
+    aes(x = year, y = total_value_plot, label = labels),
+    vjust = -0.5    # Position above the bar
+    ) +
+
+   labs(title = expression(paste("Number of days ", PM[2.5], " exceeded the 24-hour AQO threshold by season")),
         subtitle = plt_subtitle,
         x = "",
         y = "# Days") +
-   facet_wrap(~wildfire,
-              labeller = as_labeller(facet_names),
+
+   facet_wrap(~group,
+              labeller = as_labeller(facet_names_pm25),
               drop = TRUE,
               nrow = 2) +
-   theme(legend.position = "bottom",
-         axis.text = element_text(size = 10),
-         axis.title = element_text(size = 16),
-         strip.text.x = element_text(size = 14),
-         legend.text = element_text(size = 12),
-         legend.background = element_blank())
 
-# add NA labels to years with insufficient data to avoid misinterpretation of "0 days"
-p3 <- p3 + annotate("text", x = c(2,4,5,7), y = 1, label = "NA")
+  scale_x_continuous(breaks = unique(exceed_by_season$year)) +
+  scale_y_continuous(expand = expansion(mult = c(0, 0.2))) + # 20% headroom
+
+  guides(fill = guide_legend(ncol = 2)) +
+
+  theme(legend.position = "bottom",
+        legend.title = element_blank(),
+        axis.text = element_text(size = 10),
+        axis.title = element_text(size = 16),
+        strip.text.x = element_text(size = 14),
+        legend.text = element_text(margin = margin(r = 10), size = 12),
+        #legend.key.width = unit(0.75, "cm"),
+        legend.background = element_blank()
+        )
+
 p3
 
 #------------------------------------------------------
 # Plot 4: Number of days PM10 measured at Plaza 400 exceeded 24-hour AQO threshold
 # columns coloured by season
 #------------------------------------------------------
+exceed_pm10 <- exceed_by_season |>
+  filter(param == "pm10") |>
+  droplevels()
+
+facet_names_pm10 <- c(
+  `ndays_exceed` = "All data",  # includes PM2.5 driven events
+  `ndays_exceed_adj` = "Dust Events"
+  )
 
 plt_subtitle <- expression(paste(PM[10], " 24-hr concentration greater than or equal to 50 ", mu, "g ", m^3))
 
 p4 <- ggplot() +
-  geom_col(data = exceed_by_season |> filter(param == "pm10"),
-           aes(x = factor(year),
-               y = value,
+  geom_col(data = exceed_pm10,
+           aes(x = year,
+               y = value_plot,
                fill = forcats::fct_rev(met_season)),
            position = "stack") +
+
   scale_fill_manual(name = "Season",
                     values = my_colours2) +
-  labs(title = "Number of days PM10 exceeded the 24-hour AQO threshold by season",
+
+  labs(title = expression(paste("Number of days ", PM[10], " exceeded the 24-hour AQO threshold by season")),
        subtitle = plt_subtitle,
        x = "",
        y = "# Days") +
-  facet_wrap(~wildfire,
-             labeller = as_labeller(facet_names),
+
+  geom_text(
+    data = totals |> filter(param == "pm10") |> droplevels(),
+    aes(x = year, y = total_value_plot, label = labels),
+    vjust = -0.5    # Position above the bar
+  ) +
+
+  facet_wrap(~group,
+             labeller = as_labeller(facet_names_pm10),
              drop = TRUE,
              nrow = 2) +
+
+  guides(fill = guide_legend(ncol = 2)) +
+
+  scale_x_continuous(breaks = unique(exceed_by_season$year)) +
+  scale_y_continuous(expand = expansion(mult = c(0, 0.2))) + # 20% headroom
+
   theme(legend.position = "bottom",
+        legend.title.position = "top",
         axis.text = element_text(size = 10),
         axis.title = element_text(size = 16),
         strip.text.x = element_text(size = 14),
-        legend.text = element_text(size = 12),
-        legend.background = element_blank())
+        legend.text = element_text(margin = margin(r = 10), size = 12),
+        #legend.key.width = unit(1, "cm"),
+        legend.background = element_blank()
+  )
 
-# add NA labels to years with insufficient data to avoid misinterpretation of "0 days"
-p4 <- p4 + annotate("text", x = c(2,3,9), y = 1, label = "NA")
+
 p4
 
 #------------------------------------------------------
@@ -344,6 +413,7 @@ odour_days <- data_1hr |>
   # assign NA for years without sufficient data capture
   mutate(odour_days = ifelse(data_cap_met == FALSE, NA, odour_days),
          labels = ifelse(data_cap_met == FALSE|is.na(data_cap_met), "NA", "")) |>
+  filter(station_name != "Prince George 18th Avenue MAML") |>
   droplevels()
 
 labels <- odour_days |>

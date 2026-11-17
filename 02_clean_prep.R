@@ -15,6 +15,7 @@
 #------------------------------------------------------
 
 library(dplyr)
+library(lubridate)
 library(openair)
 
 data_1hr_original <- readRDS("data/data_1hr_original.rds")
@@ -114,23 +115,46 @@ data_1hr <- data_1hr |>
            )
 
 #------------------------------------------------------
-# save formatted data
-#------------------------------------------------------
-saveRDS(data_1hr, file = "data/data_1hr.rds")
-
-#------------------------------------------------------
-# clean up
-#------------------------------------------------------
-rm(data_1hr_original)
-
-#------------------------------------------------------
-# calculate and format averaged data frames to long format
+# read tfee data
 #------------------------------------------------------
 
-# data_1hr <- readRDS("data/data_1hr.rds")
+### notes:
+# The envair package considers tfee from 2017 onwards.
+# The file data/tfee_log.csv is based on an independent review of tfee and includes:
+#  2010 - 2024 for all Omineca-Peace region stations; 2010-2025 for Plaza 400
+#  2010 - 2021 (?) for select Skeena region stations
+
+# Event types
+#  EE = exceptional event
+#  TF = transboundary flow (typically wildfire smoke)
+#  local = local emissions
+
+# An assigned event_type does not necessarily indicate an AQO was exceeded.
+# For example, there is evidence (e.g. satellite imagery) to suggest wildfire smoke impacted the monitor but
+# the 24-hour PM2.5 average was 22 ug/m3.
+
+tfee <- read.csv("data/tfee_log.csv") |>
+  filter(station_name == "Prince George Plaza 400") |> # Plaza 400 is the only current monitoring site with PM2.5 and PM10
+  mutate(date = as.Date(date)) |>
+  select(date, station_name, event_type, comment)
+
+#------------------------------------------------------
+# calculate and format averaged data frames
+#------------------------------------------------------
+
+#data_1hr <- readRDS("data/data_1hr.rds")
+
+# create data frames
 
 ### daily average
-data_24hr_meta <- data_1hr |> distinct(station_name, date, year, month, param, unit, instrument, validation_status)
+data_24hr_meta <- data_1hr |>
+  distinct(station_name,
+           date, year,
+           month,
+           param,
+           unit,
+           instrument,
+           validation_status)
 
 data_1hr_wide <- data_1hr |>
   # keep air quality parameters only
@@ -153,39 +177,89 @@ data_1m_wide <- timeAverage(data_24hr_wide,
                           data.thresh = 75,
                           statistic = "mean",
                           fill = TRUE,
-                          type = "station_name")
+                          type = "station_name"
+                          )
 
 data_1y_wide <- timeAverage(data_24hr_wide,
                           avg.time = "year",
                           data.thresh = 75,
                           statistic = "mean",
                           fill = TRUE,
-                          type = "station_name")
+                          type = "station_name"
+                          )
 
 data_qtr_wide <- timeAverage(data_24hr_wide,
                              avg.time = "quarter",
                              statistic = "mean",
                              fill = TRUE,
-                             type = "station_name")
+                             type = "station_name"
+                             )
 
 data_season_wide <- timeAverage(data_24hr_wide,
                            avg.time = "season", # spring = Mar-May; summer = Jun-Aug; autumn = Sep-Nov, winter = Dec-Feb
                            statistic = "mean",
                            fill = TRUE,
-                           type = "station_name")
+                           type = "station_name"
+                           )
 
-# format averaged data frames to long format and add meta data back
+#### format data frames to long-format, add tf_ee
+
 data_24hr <- data_24hr_wide |>
+
+  # add tf_ee
+  left_join(tfee,
+            by = c("date", "station_name")) |>
+
+  # add flags
+  mutate(
+    # indicates pm25 exceeds 25 ug/m3 and TF or EE event documented
+    flag_tfee = ifelse(
+      (event_type == "TF" | event_type == "EE") &
+        (round(pm25, 0) >= 25 | is.na(pm25)),  # assigning flag_tfee = TRUE when pm2.5 data are NA but there is evidence of wildfire smoke (avoids missed flags for PM10)
+      TRUE,
+      FALSE
+    ),
+
+    # flag days pm25 > 50 ug/mg (used for interpreting PM10 exceedances)
+    # flagging 40 ug/m3 to account for monitor accuracy. For example if PM2.5 is 48.8 ug/m3, it should still be flagged as a PM2.5 driven event
+    flag_pm25_above_40 = ifelse(round(pm25, 0) >= 40, TRUE, FALSE)
+    ) |>
+
   tidyr::pivot_longer(cols = where(is.numeric), names_to = "param", values_to = "value") |>
   arrange(param, date) |>
   mutate(date = as.Date(date),
          value = round(value, 1),
          param = factor(param)) |>
+
+  # add an adjusted value column that assigns NA when
+  # PM concentrations exceed AQO thresholds
+  # due to a tfee_event (pm25) or
+  # driven by pm25 (pm10)
+  # Any exceedances that remain are locally driven and,
+  # for pm10, driven by the coarse fraction.
+  mutate(value_adj = case_when(
+    param == "pm25" & flag_tfee == TRUE ~ NA_real_,
+    param == "pm10" & (flag_tfee == TRUE | flag_pm25_above_40 == TRUE) ~ NA_real_,
+    .default =  value
+    )
+  ) |>
+
+  # add meta data and format column order
   left_join(data_24hr_meta, by = c("station_name", "date", "param")) |>
-  # Drop parameters where all values are NA for any given station
-  filter_out(all(is.na(value)),
-             .by = c(station_name, param),
-             .preserve = FALSE)
+  select(station_name,
+         date,
+         year,
+         month,
+         param,
+         value,
+         value_adj,
+         unit,
+         event_type,
+         comment,
+         flag_tfee,
+         flag_pm25_above_40,
+         instrument,
+         validation_status)
 
 data_1m <- data_1m_wide |>
   tidyr::pivot_longer(cols = where(is.numeric), names_to = "param", values_to = "value") |>
@@ -227,80 +301,24 @@ data_season <- data_season_wide |>
   select(-month) |>
   left_join(data_24hr_meta, by = c("station_name", "date", "param"))
 
-#------------------------------------------------------
-# add tf_ee to data_1hr and data_24hr: based on data/tfee-log.csv
-#------------------------------------------------------
-
-### notes:
-# envair considers tfee from 2017 onwards
-# data/tfee_log.csv is based on an independent review (by G.Roth) and includes:
-#  2010 - 2024 for all Omineca-Peace region stations # to 2010-2025 for Plaza 400
-#  2010 - 2021 (?) for select Skeena region stations
-#  flag_tfee = TRUE indicates evidence of wildfire smoke in the vicinity of the monitor (e.g. satellite image)
-#  flag_tfee = TRUE does not necessarily indicate AQO/CAAQS (or other threshold) was exceeded
-#  In the data_24hr dataset:
-#  removed_tfee = TRUE indicates AQO was exceed when flag_tfee = TRUE;
-#  the value_tfee column is set to NA for params = pm2.5 or params = pm10 when removed_tfee = TRUE.
-
-tfee <- read.csv("data/tfee_log.csv") |>
-  filter(station_name == "Prince George Plaza 400") |> # Plaza 400 is the only current monitoring site with PM2.5 and PM10
-  mutate(date = as.Date(date)) |>
-  select(date, station_name, event_type, comment)
+# add tfee_flags to data_1hr
+tfee_meta <- data_24hr |>
+  select(station_name,
+         date,
+         event_type,
+         comment,
+         flag_tfee,
+         flag_pm25_above_40) |>
+  distinct()
 
 data_1hr <- data_1hr |>
-  left_join(tfee,
+  left_join(tfee_meta,
             by = c("date", "station_name"),
             relationship = "many-to-many"
             ) |>
-  distinct() |>
   mutate(station_name = factor(station_name),
-         event_type = factor(event_type),
-         flag_tfee = case_when(event_type == "TF" ~ TRUE,
-                               event_type == "EE" ~ TRUE,
-                               .default = FALSE)
-         ) |>
-  # Drop parameters where all values are NA for any given station
-  filter_out(all(is.na(raw_value)),
-             .by = c(station_name, param),
-             .preserve = FALSE)
-
-tfee_pm25 <- data_24hr |>
-  left_join(tfee,
-            by = c("date", "station_name"),
-            relationship = "many-to-many") |>
-  distinct() |>
-  mutate(station_name = factor(station_name),
-         event_type = factor(event_type),
-         flag_tfee = case_when(event_type == "TF" ~ TRUE,
-                               event_type == "EE" ~ TRUE,
-                               .default = FALSE),
-         removed_tfee = ifelse(flag_tfee == TRUE & param == "pm25" & round(value, 0) >= 25, TRUE, FALSE),
-         value_tfee = ifelse(flag_tfee == TRUE & param == "pm25" & round(value, 0) >= 25, NA_real_, value)) |>
-  select(station_name, year, month, date, param, value, value_tfee, instrument, unit, validation_status, flag_tfee, removed_tfee, event_type, comment) |>
-  # Drop parameters where all values are NA for any given station
-  filter_out(all(is.na(value)),
-             .by = c(station_name, param),
-             .preserve = FALSE)
-
-# For days where removed_tfee flag is TRUE for PM2.5, also assign TRUE to PM10 and set value_tfee to NA
-removed_tfee_days <- tfee_pm25 |>
-  filter(removed_tfee == TRUE) |>
-  pull(date)
-
-# assign tfee_removed and value_tfee to pm10
-data_24hr <- tfee_pm25 |>
-  mutate(
-    removed_tfee = removed_tfee | (param == "pm10" & date %in% removed_tfee_days),
-    value_tfee = if_else(
-      param == "pm10" & date %in% removed_tfee_days,
-      NA_real_,
-      value_tfee
-      )
-    )
-
-#clean up
-rm(tfee_pm25)
-rm(removed_tfee_days)
+         event_type = factor(event_type)
+         )
 
 #------------------------------------------------------
 # data capture summaries: month, year, calendar quarter, and season
@@ -361,10 +379,10 @@ data_cap_season <- timeAverage(data_24hr_wide,
          )|>
   select(-date)
 
-# saveRDS(data_cap_1m, file = "data/data_cap_1m.rds")
-# saveRDS(data_cap_1y, file = "data/data_cap_1y.rds")
-# saveRDS(data_cap_qtr, file = "data/data_qtr_season.rds")
-# saveRDS(data_cap_season, file = "data/data_cap_season.rds")
+ # saveRDS(data_cap_1m, file = "data/data_cap_1m.rds")
+ # saveRDS(data_cap_1y, file = "data/data_cap_1y.rds")
+ # saveRDS(data_cap_qtr, file = "data/data_qtr_season.rds")
+ # saveRDS(data_cap_season, file = "data/data_cap_season.rds")
 
 #------------------------------------------------------
 # add data capture to data sets (where applicable):
@@ -413,7 +431,7 @@ data_1y <- data_1y |>
              .preserve = FALSE)
 
 #------------------------------------------------------
-# save data sets (with data capture where applicable)
+# save data sets (include tf_ee and data capture where applicable)
 #------------------------------------------------------
 
 saveRDS(data_1hr, file = "data/data_1hr.rds")
@@ -427,7 +445,9 @@ saveRDS(data_season, file = "data/data_season.rds")
 # clean up
 #------------------------------------------------------
 
-rm(list = ls(pattern = "wide"))
-rm(list = ls(pattern = "meta"))
+rm(data_1hr_original)
 rm(tfee)
 rm(o3_8hr_roll)
+rm(list = ls(pattern = "wide"))
+rm(list = ls(pattern = "meta"))
+rm(list = ls(pattern = "data_cap"))
